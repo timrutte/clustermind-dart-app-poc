@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'config.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Markdown Notizen App',
+      title: 'Clustermind',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -34,7 +35,7 @@ class _NoteScreenState extends State<NoteScreen> {
       _isLoading = true;
     });
 
-    final String apiUrl = 'http://127.0.0.1:8080/nodes';
+    final String apiUrl = Config.apiUrl;
 
     // Erstelle ein Map-Objekt mit den Daten
     final Map<String, dynamic> noteData = {
@@ -42,7 +43,7 @@ class _NoteScreenState extends State<NoteScreen> {
       "title": "test1234"
     };
 
-    // Konvertiere das Map-Objekt in eine JSON-Zeichenkette
+    // Konavertiere das Map-Objekt in eine JSON-Zeichenkette
     final String jsonBody = jsonEncode(noteData);
 
     final response = await http.post(
@@ -50,7 +51,8 @@ class _NoteScreenState extends State<NoteScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonBody,
     );
-
+    print('Status Code: ${response.statusCode}');
+    print('Response Body: ${response.body}');
     setState(() {
       _isLoading = false;
     });
@@ -61,8 +63,6 @@ class _NoteScreenState extends State<NoteScreen> {
         SnackBar(content: Text('Notiz gespeichert!')),
       );
     } else {
-      print('Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Fehler beim Speichern der Notiz')),
       );
@@ -73,10 +73,15 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Markdown Notizen'),
+        title: Text('Clustermind'),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
+            color: Colors.green,
+            onPressed: _isLoading ? null : _saveNote,
+          ),
+          IconButton(
+            icon: Icon(Icons.network_cell_outlined),
             onPressed: _isLoading ? null : _saveNote,
           ),
         ],
