@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'config.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  runApp(ClustermindApp());
 }
 
-class MyApp extends StatelessWidget {
+class ClustermindApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +35,7 @@ class _NoteScreenState extends State<NoteScreen> {
       _isLoading = true;
     });
 
-    final String apiUrl = Config.apiUrl;
+    final String apiUrl = "${Config.apiUrl}/nodes";
 
     // Erstelle ein Map-Objekt mit den Daten
     final Map<String, dynamic> noteData = {
@@ -51,8 +51,10 @@ class _NoteScreenState extends State<NoteScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonBody,
     );
+
     print('Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
+
     setState(() {
       _isLoading = false;
     });
