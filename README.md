@@ -1,7 +1,8 @@
 
 # Clustermind Flutter Application Proof of Concept
 
-This project is a simple Flutter application that demonstrates storing and retrieving data via an API.
+This project is a simple Flutter application that demonstrates storing and retrieving data via an API. 
+It provides frontend functionality for the Clustermind Go backend application, available at: [Clustermind Go API POC](https://github.com/timrutte/clustermind-go-api-poc).
 
 ## Getting Started
 
